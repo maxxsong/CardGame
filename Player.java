@@ -16,6 +16,5 @@ public class Player {
 	public Player(String name){
 		this.name = name;
 	}
-	//this is a test
-    public int test123;
+	//lol will this create a merge conflict?
 }
