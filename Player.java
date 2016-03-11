@@ -17,4 +17,5 @@ public class Player {
 		this.name = name;
 	}
 	//this is a test
+    public int test123;
 }
