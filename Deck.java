@@ -29,9 +29,9 @@ public class Deck {
 	}
 	
 	public void deal(ArrayList<Player>players){
-		for (int j=0;j<dk.size();j++){
-			for (int k=0;k<players.size();k++){
-				//Need to work on
+		for(int i = 0; i < players.size(); i++){
+			for(int j = i; j < cardsLeft(); i+=players.size()){
+				players.get(i).add(deal());
 			}
 		}
 	}
