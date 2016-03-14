@@ -51,6 +51,7 @@ public class Deck {
 	void replenish(){
 		for(int i = 0; i< 4; i++){
 			for(int j = 1; j <= 13; j++){
+				dk.clear();
 				dk.add(new Card(j, Suit.values()[i]));
 			}
 		}
