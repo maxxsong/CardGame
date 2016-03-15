@@ -12,6 +12,9 @@ public class Player {
     public void add(ArrayList<Card>al){
         hand.addAll(al);
     }
+    public void insert(ArrayList<Card>al){
+        hand.addAll(0,al);
+    }
     //return
     public Card nextCard(){
         return hand.get(hand.size()-1);
