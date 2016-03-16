@@ -53,6 +53,7 @@ public class Deck {
 		for(int i = 0; i < x.size(); i++){
 			ans.add(y.get(x.get(i)));
 		}
+		return ans;
 	}
 
 	public static Player decideWinner(ArrayList<Player>al){

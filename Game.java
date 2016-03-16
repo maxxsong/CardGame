@@ -10,52 +10,90 @@ public class Game {
 	private ArrayList<Player>players = new ArrayList<Player>();
 	private Deck dk = new Deck();
 	private ArrayList<Card>currCards = new ArrayList<Card>();
-	private ArrayList<Integer>roundWinners = new ArrayList<>();
+	private ArrayList<Card>stake = new ArrayList<>();
+	private ArrayList<Player>roundWinners = new ArrayList<>();
+
 
 	private void initialize(){
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Please enter the names of the Player(s)to terminate, enter x");
+		Scanner scInt = new Scanner(System.in);
+		System.out.println("Please enter the names of the Player(s); to terminate, enter x");
 		while(sc.hasNext()&&!sc.next().equals("x")){
 			players.add(new Player(sc.next()));
 			System.out.println("We have Players: ");
 			for(int i = 0; i < players.size(); i++){
-				System.out.println(i + ". " + players.get(i));
+				System.out.println(i + ". " + players.get(i).getName());
 			}
 		}
+		System.out.println("Please specify the number of decks of cards you wish to use in this game: (enter positive integer)");
+		for(int i = 0; i < sc.nextInt(); i++) {
+			dk.shuffle();
+			dk.deal(players);
+			dk.replenish();
+		}
+		sc.close();
+		scInt.close();
 	}
+private void checkEligibility(){
+	for(int i = 0; i < players.size(); i++){
+
+		if(players.size()==1){
+			players.get(0).declearVictory();
+			return;
+		}
+		if(players.get(i).numLeft()==0) {
+			players.remove(i).declearFailure();
+		}
+	}
+}
+	private static ArrayList<Player> checkEligibility(ArrayList<Player>al){
+		ArrayList<Player>ans = new ArrayList<>();
+		for(int i = 0; i < al.size(); i++){
+
+			if(al.size()==1){
+				return ans;
+			}
+			if(al.get(i).numLeft()==0) {
+				ans.add(al.remove(i));
+			}
+		}
+		if(ans.size()>0) {
+			for (Player p; ans)
+			{ p.declearFailure();}
+		}
+		return ans;
+	}
+
+	private ArrayList<Player> getWinners(ArrayList<Player>al){
+		for(Player p; al){
+			currCards.add(p.playNext());
+		}
+		stake.addAll(currCards);
+		return Deck.getWinners(Deck.getWinnersIndex(currCards),al);
+	}
+
 	public void playWarGame(){
-		dk.shuffle();
 		initialize();
 		boolean keep_going = true;
 
 		while(keep_going){
-
+			checkEligibility();
 			for (int i = 0; i < players.size(); i++) {
 				currCards.add(players.get(i).playNext());
 				System.out.println("Player " + players.get(i).getName() + " played" + currCards.get(i));
+				roundWinners = players;
 			}
-			roundWinners = Deck.getWinners(currCards);
+			while(roundWinners.size()>1) {
+				players.removeAll(checkEligibility(roundWinners));
+				roundWinners = getWinners(roundWinners);
+			}
 			if(roundWinners.size()==1){
-				System.out.println("\n" + players.get(Deck.getHighestCardIndex(currCards)) + "won this round");
-				players.get(Deck.getHighestCardIndex(currCards)).isWinner();
-				for (Player p; players){
-					if(players.indexOf(p)!=Deck.getHighestCardIndex(currCards)){
-						p.isLoser();
-					}
-				}
-			}else{
-				ArrayList<Card>stake = new ArrayList<Card>();
-				for(int i = 0; i < roundWinners.size(); i++){
-					stake.add(players.get(roundWinners.get(i)).playNext());
-					if(Deck.getHighestCardIndex(stake).size()<1
-				}
+				System.out.println("\n" + roundWinners.get(0) + "won this round");
+				players.get(players.indexOf(roundWinners.get(0))).add(stake);
 			}
-
-			wins[Deck.getHighestCardIndex(currCards)]++;
-			players.get(Deck.getHighestCardIndex(currCards)).insert(currCards);
-			for (Player x :
-					players) {
-				keep_going = x.hasNext()&&keep_going;
+			if(players.size()==1){
+				players.get(0).declearVictory();
+				keep_going = false;
 			}
 	}
 
